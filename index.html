@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parvathi Letha — AI Product Leader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Archivo:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black:     #0e0d0b;
+      --charcoal:  #1a1916;
+      --dark:      #232118;
+      --mid:       #3a3830;
+      --muted:     #7a7668;
+      --warm-off:  #f2ede4;
+      --paper:     #e8e2d6;
+      --amber:     #d4882a;
+      --amber-lt:  #e8a84a;
+      --amber-dim: #a86a1a;
+      --text:      #f0ece4;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Archivo', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── CURSOR ── */
+    .cursor {
+      position: fixed; width: 8px; height: 8px;
+      background: var(--amber); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width .25s, height .25s, opacity .25s;
+    }
+    .cursor-ring {
+      position: fixed; width: 32px; height: 32px;
+      border: 1px solid rgba(212,136,42,.4); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: opacity .3s;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 60px; height: 64px;
+      background: rgba(14,13,11,.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(240,236,228,.06);
+    }
+    .nav-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px; font-weight: 600; letter-spacing: .04em;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-mark span { color: var(--amber); }
+    .nav-links { display: flex; gap: 40px; list-style: none; align-items: center; }
+    .nav-links a {
+      font-size: 11px; letter-spacing: .13em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; font-weight: 400;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      padding: 9px 22px !important;
+      border: 1px solid rgba(212,136,42,.5) !important;
+      color: var(--amber) !important;
+      transition: all .2s !important;
+    }
+    .nav-cta:hover {
+      background: var(--amber) !important;
+      color: var(--black) !important;
+      border-color: var(--amber) !important;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      position: relative; overflow: hidden;
+    }
+
+    /* left — dark warm black */
+    .hero-left {
+      background: var(--black);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 140px 72px 100px;
+      position: relative; z-index: 2;
+    }
+
+    /* subtle grain */
+    .hero-left::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+      pointer-events: none; opacity: .5;
+    }
+
+    /* amber accent line on left edge */
+    .hero-left::after {
+      content: '';
+      position: absolute; top: 20%; left: 0; width: 3px; height: 60%;
+      background: linear-gradient(180deg, transparent, var(--amber), transparent);
+    }
+
+    .hero-eyebrow {
+      font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 28px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--amber); }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(64px, 7vw, 100px);
+      font-weight: 300; line-height: .92;
+      letter-spacing: -.03em; color: var(--text);
+      margin-bottom: 14px;
+    }
+    .hero-name em {
+      display: block; font-style: italic;
+      font-weight: 300; color: var(--amber-lt);
+    }
+
+    .hero-role {
+      font-size: 11px; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--muted);
+      font-weight: 400; margin-bottom: 36px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid rgba(240,236,228,.07);
+    }
+
+    .hero-bio {
+      font-size: 15px; line-height: 1.9;
+      color: rgba(240,236,228,.46);
+      max-width: 420px; margin-bottom: 52px;
+    }
+    .hero-bio strong { color: rgba(240,236,228,.85); font-weight: 400; }
+
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-amber {
+      padding: 14px 36px;
+      background: var(--amber); color: var(--black);
+      font-size: 11px; font-weight: 600; letter-spacing: .13em;
+      text-transform: uppercase; text-decoration: none;
+      transition: background .22s; display: inline-block;
+    }
+    .btn-amber:hover { background: var(--amber-lt); }
+    .btn-ghost {
+      padding: 13px 32px;
+      border: 1px solid rgba(240,236,228,.15);
+      color: rgba(240,236,228,.5);
+      font-size: 11px; letter-spacing: .13em;
+      text-transform: uppercase; text-decoration: none;
+      font-weight: 400; display: inline-block;
+      transition: all .22s;
+    }
+    .btn-ghost:hover { border-color: var(--amber); color: var(--amber); }
+
+    /* right — photo panel */
+    .hero-right {
+      position: relative; overflow: hidden;
+      background: var(--charcoal);
+    }
+
+    .hero-photo-wrap {
+      position: absolute; inset: 0;
+    }
+
+    .hero-photo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      display: block;
+      filter: grayscale(18%) contrast(1.04);
+    }
+
+    /* dark gradient overlay — bottom fade into black */
+    .hero-photo-wrap::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(14,13,11,0) 40%,
+        rgba(14,13,11,.7) 100%
+      ),
+      linear-gradient(
+        to left,
+        rgba(14,13,11,0) 60%,
+        rgba(14,13,11,.35) 100%
+      );
+    }
+
+    /* amber corner accent */
+    .hero-photo-wrap::before {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--amber), var(--amber-lt), transparent);
+      z-index: 2;
+    }
+
+    /* floating caption badge */
+    .hero-badge {
+      position: absolute; bottom: 48px; left: 40px; z-index: 3;
+      border-left: 2px solid var(--amber);
+      padding-left: 16px;
+    }
+    .hero-badge-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-weight: 600;
+      color: var(--text); letter-spacing: -.01em;
+      line-height: 1.2;
+    }
+    .hero-badge-role {
+      font-size: 10px; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--amber);
+      margin-top: 4px; font-weight: 500;
+    }
+
+    .hero-scroll {
+      position: absolute; bottom: 36px; left: 64px;
+      display: flex; align-items: center; gap: 12px;
+      font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(240,236,228,.2); z-index: 3;
+    }
+    .scroll-bar {
+      width: 44px; height: 1px;
+      background: rgba(240,236,228,.12);
+      position: relative; overflow: hidden;
+    }
+    .scroll-bar::after {
+      content: ''; position: absolute;
+      left: -100%; top: 0; width: 100%; height: 100%;
+      background: var(--amber);
+      animation: sweep 2.4s ease-in-out infinite;
+    }
+    @keyframes sweep { 0%{left:-100%} 50%,100%{left:100%} }
+
+    /* ── SECTION SHELL ── */
+    section { background: var(--black); }
+    .sec-wrap { max-width: 1200px; margin: 0 auto; padding: 96px 60px; }
+    .sec-hd { display: flex; align-items: baseline; gap: 18px; margin-bottom: 60px; }
+    .sec-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 14px; color: var(--amber);
+    }
+    .sec-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(30px, 3.5vw, 46px);
+      font-weight: 600; letter-spacing: -.01em; color: var(--text);
+    }
+    .sec-rule { flex: 1; height: 1px; background: rgba(240,236,228,.08); max-width: 220px; }
+
+    /* ── ABOUT ── */
+    #about { border-top: 1px solid rgba(240,236,228,.06); }
+    .about-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 72px; align-items: start; }
+    .about-text p { font-size: 15px; line-height: 1.92; color: rgba(240,236,228,.55); margin-bottom: 22px; }
+    .about-text p strong { color: rgba(240,236,228,.88); font-weight: 500; }
+    .about-pullquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 21px; font-weight: 300;
+      line-height: 1.6; color: var(--text);
+      border-left: 2px solid var(--amber);
+      padding-left: 26px; margin: 36px 0;
+      color: rgba(240,236,228,.75);
+    }
+
+    .skills-card {
+      background: var(--charcoal);
+      border: 1px solid rgba(240,236,228,.07);
+      padding: 36px;
+    }
+    .skills-hd {
+      font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--amber); font-weight: 500; margin-bottom: 24px;
+    }
+    .skill-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 0;
+      border-bottom: 1px solid rgba(240,236,228,.05);
+      font-size: 13px; color: rgba(240,236,228,.6);
+    }
+    .skill-row:last-child { border-bottom: none; }
+    .bar-bg { width: 80px; height: 2px; background: rgba(240,236,228,.1); position: relative; }
+    .bar-fill {
+      position: absolute; left: 0; top: 0; height: 100%;
+      background: var(--amber);
+      transition: width 1.3s cubic-bezier(.22,1,.36,1);
+    }
+
+    /* ── GITHUB ── */
+    #github { border-top: 1px solid rgba(240,236,228,.06); }
+    .gh-card { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+
+    .gh-panel {
+      padding: 52px;
+      background: var(--charcoal);
+      border: 1px solid rgba(240,236,228,.06);
+    }
+    .gh-username {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px; font-weight: 600; letter-spacing: -.01em;
+      color: var(--text); margin-bottom: 10px;
+    }
+    .gh-sub { font-size: 13px; color: var(--muted); margin-bottom: 40px; line-height: 1.7; }
+    .gh-stats { display: flex; gap: 40px; margin-bottom: 40px; }
+    .gh-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px; font-weight: 300; color: var(--text); line-height: 1;
+    }
+    .gh-lbl { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+    .contrib-lbl { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+    .contrib-graph { display: grid; grid-template-columns: repeat(52,1fr); gap: 2px; margin-bottom: 32px; }
+    .contrib-week { display: flex; flex-direction: column; gap: 2px; }
+    .contrib-day { aspect-ratio: 1; border-radius: 1px; background: rgba(240,236,228,.05); }
+    .contrib-day.l1 { background: rgba(212,136,42,.2); }
+    .contrib-day.l2 { background: rgba(212,136,42,.45); }
+    .contrib-day.l3 { background: rgba(212,136,42,.7); }
+    .contrib-day.l4 { background: var(--amber); }
+
+    .repo-pills { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+    .repo-pill {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px;
+      background: rgba(240,236,228,.03);
+      border: 1px solid rgba(240,236,228,.07);
+      font-size: 13px; color: var(--text);
+      text-decoration: none; transition: all .2s;
+    }
+    .repo-pill:hover { border-color: rgba(212,136,42,.4); color: var(--amber-lt); }
+    .repo-lang { font-size: 11px; color: var(--muted); }
+
+    /* ── WRITING ── */
+    #writing { border-top: 1px solid rgba(240,236,228,.06); }
+    .writing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-bottom: 2px; }
+
+    .post-card {
+      background: var(--charcoal);
+      border: 1px solid rgba(240,236,228,.06);
+      padding: 36px;
+      text-decoration: none; display: flex;
+      flex-direction: column; min-height: 300px;
+      position: relative; overflow: hidden;
+      transition: border-color .3s, transform .3s;
+    }
+    .post-card::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 2px;
+      background: var(--amber);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .4s cubic-bezier(.22,1,.36,1);
+    }
+    .post-card:hover { border-color: rgba(212,136,42,.3); transform: translateY(-3px); }
+    .post-card:hover::after { transform: scaleX(1); }
+
+    .post-src {
+      font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+      font-weight: 500; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .post-src.medium { color: #5dab52; }
+    .post-src.substack { color: var(--amber); }
+
+    .post-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px; font-weight: 600;
+      line-height: 1.35; color: var(--text);
+      margin-bottom: 14px; flex: 1;
+    }
+    .post-excerpt { font-size: 13px; line-height: 1.7; color: var(--muted); margin-bottom: 24px; }
+    .post-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 11px; color: rgba(240,236,228,.25);
+    }
+    .post-arrow { font-size: 16px; color: var(--amber); transition: transform .2s; }
+    .post-card:hover .post-arrow { transform: translate(3px,-3px); }
+
+    .plat-links { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .plat-link {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 32px;
+      background: var(--charcoal);
+      border: 1px solid rgba(240,236,228,.06);
+      color: rgba(240,236,228,.55);
+      text-decoration: none; font-size: 12px;
+      letter-spacing: .1em; text-transform: uppercase;
+      transition: all .25s;
+    }
+    .plat-link:hover { border-color: rgba(212,136,42,.35); color: var(--amber-lt); }
+    .plat-link-arr { opacity: .4; font-size: 18px; transition: opacity .2s; }
+    .plat-link:hover .plat-link-arr { opacity: .9; }
+
+    /* ── PROJECTS ── */
+    #projects { border-top: 1px solid rgba(240,236,228,.06); }
+    .proj-list { display: flex; flex-direction: column; gap: 2px; }
+    .proj-row {
+      display: grid; grid-template-columns: 56px 1fr 1fr auto;
+      gap: 32px; align-items: center;
+      padding: 26px 36px;
+      background: var(--charcoal);
+      border: 1px solid rgba(240,236,228,.06);
+      text-decoration: none; position: relative; overflow: hidden;
+      transition: border-color .25s;
+    }
+    .proj-row::before {
+      content: ''; position: absolute;
+      left: 0; top: 0; bottom: 0; width: 2px;
+      background: var(--amber);
+      transform: scaleY(0); transform-origin: bottom;
+      transition: transform .35s cubic-bezier(.22,1,.36,1);
+    }
+    .proj-row:hover { border-color: rgba(212,136,42,.25); }
+    .proj-row:hover::before { transform: scaleY(1); }
+    .proj-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 20px; color: var(--amber);
+    }
+    .proj-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px; font-weight: 600;
+      color: var(--text); letter-spacing: -.01em;
+    }
+    .proj-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+    .proj-tags { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+    .tag {
+      padding: 5px 11px;
+      background: rgba(240,236,228,.05);
+      border: 1px solid rgba(240,236,228,.08);
+      font-size: 10px; letter-spacing: .07em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    /* ── VIDEO ── */
+    #video { border-top: 1px solid rgba(240,236,228,.06); }
+    .video-hl {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 3.5vw, 46px);
+      font-weight: 300; line-height: 1.15; letter-spacing: -.02em;
+      color: var(--text); margin-bottom: 48px;
+    }
+    .video-hl em { font-style: italic; color: var(--amber-lt); }
+    .video-frame-wrap {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+      border: 1px solid rgba(240,236,228,.08);
+    }
+    .video-frame-wrap iframe {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      border: 0;
+    }
+
+    /* ── CONTACT ── */
+    #contact { border-top: 1px solid rgba(240,236,228,.06); background: var(--charcoal); overflow: hidden; position: relative; }
+    #contact::before {
+      content: 'CONTACT';
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 180px; font-weight: 700; letter-spacing: -.04em;
+      color: rgba(240,236,228,.018);
+      bottom: -10px; left: 50%; transform: translateX(-50%);
+      white-space: nowrap; user-select: none;
+    }
+    .contact-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 120px 60px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; position: relative; z-index: 2;
+    }
+    .contact-hl {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(42px, 5vw, 68px);
+      font-weight: 300; line-height: 1.08; letter-spacing: -.02em;
+      color: var(--text); margin-bottom: 28px;
+    }
+    .contact-hl em { font-style: italic; color: var(--amber-lt); }
+    .contact-sub { font-size: 15px; line-height: 1.82; color: var(--muted); margin-bottom: 48px; }
+    .contact-email {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(212,136,42,.3);
+      padding-bottom: 4px; display: inline-block;
+      transition: color .22s, border-color .22s;
+    }
+    .contact-email:hover { color: var(--amber-lt); border-color: var(--amber); }
+
+    .social-list { display: flex; flex-direction: column; gap: 3px; justify-content: center; }
+    .soc-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 26px;
+      border: 1px solid rgba(240,236,228,.07);
+      text-decoration: none; transition: all .22s;
+      background: rgba(14,13,11,.3);
+    }
+    .soc-row:hover { border-color: rgba(212,136,42,.3); background: rgba(212,136,42,.04); }
+    .soc-left { display: flex; align-items: center; gap: 16px; }
+    .soc-icon {
+      width: 36px; height: 36px;
+      background: rgba(240,236,228,.05);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--amber);
+    }
+    .soc-name { font-size: 14px; color: var(--text); font-weight: 400; }
+    .soc-handle { font-size: 12px; color: var(--muted); }
+    .soc-arr { color: rgba(212,136,42,.35); font-size: 16px; transition: transform .2s, color .2s; }
+    .soc-row:hover .soc-arr { transform: translate(3px,-3px); color: var(--amber-lt); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(240,236,228,.05);
+      padding: 22px 60px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    footer p { font-size: 11px; color: rgba(240,236,228,.2); letter-spacing: .05em; }
+    .footer-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px; color: rgba(240,236,228,.2);
+      letter-spacing: .06em;
+    }
+    .footer-mark span { color: var(--amber-dim); }
+
+    /* ── REVEAL ── */
+    .rev {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1);
+    }
+    .rev.in { opacity: 1; transform: none; }
+    .d1 { transition-delay: .1s; }
+    .d2 { transition-delay: .2s; }
+    .d3 { transition-delay: .3s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; }
+      .hero-right { min-height: 60vh; }
+      .hero-left { padding: 100px 28px 64px; }
+      .sec-wrap { padding: 72px 24px; }
+      .about-grid, .gh-card, .writing-grid, .contact-inner { grid-template-columns: 1fr; }
+      .proj-row { grid-template-columns: 1fr; gap: 10px; }
+      .proj-tags { justify-content: flex-start; }
+      .plat-links { grid-template-columns: 1fr; }
+      footer { padding: 18px 24px; flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-mark">Home</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#writing">Writing</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#video">Videos</a></li>
+      <li><a href="#contact" class="nav-cta">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-left">
+      <h1 class="hero-name">Parvathi<em>Letha</em></h1>
+      <p class="hero-role">Building the AI-First Enterprise: Strategic Product Leadership and Scalable Innovation</p>
+      <p class="hero-bio">
+        Product leader with 17+ years building <strong>production-grade platforms</strong> across GenAI, SaaS, and Cloud. Currently Head of Product Management at Articul8 AI (ex-Amazon, IBM), launched domain-specific GenAI platform, first ever custom branded Alexa voice assistant, led initiatives to commercialize IBM Quantum computing, translating advances from research to production ready enterprise capabilities.
+      </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn-amber">View Work</a>
+        <a href="#contact" class="btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-photo-wrap">
+        <img src="parvathi.jpg" alt="Parvathi Letha" />
+        <div class="hero-badge">
+          <div class="hero-badge-name">Parvathi Letha</div>
+          <div class="hero-badge-role">Head of Product · Articul8 AI</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <span class="scroll-bar"></span>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="sec-wrap">
+      <div class="sec-hd rev">
+        <span class="sec-num">01</span>
+        <h2 class="sec-title">About</h2>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p class="rev">
+            I'm a <strong>product leader</strong> focused on turning AI/ML research into products
+            that enterprises actually adopt. My work lives at the intersection of technical depth
+            and strategic clarity: defining what to build, why it matters, and how it reaches customers.
+          </p>
+          <blockquote class="about-pullquote rev d1">
+            "Good AI products don't just produce outcomes , they earn trust, reduce friction integrating into existing workflows,
+            and get measurably better with every interaction."
+          </blockquote>
+          <p class="rev d2">
+            Currently working on a <strong> domain-specific Generative AI platform</strong> delivering hyper-personalized outcomes for enterprises. I care deeply
+            about product rigour: clear success metrics, well-defined evaluation and quality assurance processes, and systems
+            that are explainable by design.
+          </p>
+          <p class="rev d3">
+            Outside of work I write about <strong> Generative AI product strategy</strong>, build portfolio tools
+            that demonstrate PM rigour, and mentor early-career product managers navigating the AI transition.
+          </p>
+        </div>
+
+        <div class="skills-card rev d1">
+          <div class="skills-hd">Core Capabilities</div>
+          <div class="skill-row"><span>AI Product Strategy and Execution</span><div class="bar-bg"><div class="bar-fill" style="width:0" data-w="93%"></div></div></div>
+          <div class="skill-row"><span>Agentic System and Orchestration Architecture</span><div class="bar-bg"><div class="bar-fill" style="width:0" data-w="88%"></div></div></div>
+          <div class="skill-row"><span>Productionizing AI Systems</span><div class="bar-bg"><div class="bar-fill" style="width:0" data-w="90%"></div></div></div>
+          <div class="skill-row"><span>Domain-Specific Models &amp; Evaluation</span><div class="bar-bg"><div class="bar-fill" style="width:0" data-w="94%"></div></div></div>
+          <div class="skill-row"><span>AI Governance & Observability</span><div class="bar-bg"><div class="bar-fill" style="width:0" data-w="82%"></div></div></div>
+          <div class="skill-row"><span>Go-to-Market & Enterprise Adoption</span><div class="bar-bg"><div class="bar-fill" style="width:0" data-w="96%"></div></div></div>
+          <div class="skill-row"><span>Cross-Functional Leadership</span><div class="bar-bg"><div class="bar-fill" style="width:0" data-w="75%"></div></div></div>
+          <div class="skill-row"><span>Building PM Operating System</span><div class="bar-bg"><div class="bar-fill" style="width:0" data-w="80%"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WRITING -->
+  <section id="writing">
+    <div class="sec-wrap">
+      <div class="sec-hd rev">
+        <span class="sec-num">02</span>
+        <h2 class="sec-title">Writing</h2>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="writing-grid">
+        <a href="https://www.linkedin.com/pulse/software-development-impact-generative-ai-future-work-parvathi-letha-wcowc/?trackingId=lSpdQZf1SCW2NfJFNg6xYg%3D%3D" target="_blank" rel="noopener" class="post-card rev">
+          <div class="post-src linkedin">✍ LinkedIn</div>
+          <div class="post-title">Software Development: Impact of Generative AI on future of Work</div>
+          <div class="post-excerpt">Architecture decisions that separate polished demos from enterprise-grade deployments — and how to think about failure modes from day one.</div>
+          <div class="post-foot"><span>5 min read </span><span class="post-arrow">↗</span></div>
+        </a>
+        <a href="https://www.articul8.ai/blog/why-gen-ai-projects-fail-and-what-it-takes-to-rethink-enterprise-data-architecture" target="_blank" rel="noopener" class="post-card rev d1">
+          <div class="post-src Articul8 Website">📨 Company Blog</div>
+          <div class="post-title">Why GenAI Projects Fail – and What It Takes to Rethink Enterprise Data Architecture</div>
+          <div class="post-excerpt">Traditional retrieval fails when document semantics blur together. Here's the infrastructure layer that prevents it at scale.</div>
+          <div class="post-foot"><span>8 min read </span><span class="post-arrow">↗</span></div>
+        </a>
+      </div>
+      <!-- <div class="plat-links rev">
+        <a href="https://medium.com/@parvathinair" target="_blank" rel="noopener" class="plat-link">
+          <span>All articles on Medium</span><span class="plat-link-arr">↗</span>
+        </a>
+        <a href="https://substack.com/@genaiplaybook" target="_blank" rel="noopener" class="plat-link">
+          <span>Subscribe on Substack</span><span class="plat-link-arr">↗</span>
+        </a>
+      </div> -->
+    </div>
+  </section>
+
+  <!-- PROJECTS & GITHUB -->
+  <section id="projects">
+    <div class="sec-wrap">
+      <div class="sec-hd rev">
+        <span class="sec-num">03</span>
+        <h2 class="sec-title">Projects</h2>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="proj-list">
+        <a href="https://github.com/anlepago/pm-os-lite" target="_blank" rel="noopener" class="proj-row rev">
+          <span class="proj-num">01</span>
+          <div><div class="proj-name">PM-OS Lite</div></div>
+          <div class="proj-desc">AI-native product rigour system with schema validation, quality gates, adversarial review agents, and a live quality dashboard.</div>
+          <div class="proj-tags"><span class="tag">Next.js</span><span class="tag">Claude API</span><span class="tag">SQLite</span></div>
+        </a>
+        <a href="https://github.com/anlepago/video-scoring-pipeline" target="_blank" rel="noopener" class="proj-row rev d1">
+          <span class="proj-num">02</span>
+          <div><div class="proj-name">Candidate Video Scoring Pipeline</div></div>
+          <div class="proj-desc">Multi-agent rubric-driven scoring system with React dashboard for structured, scalable hiring decisions.</div>
+          <div class="proj-tags"><span class="tag">React</span><span class="tag">Multi-Agent</span><span class="tag">Claude Code</span></div>
+        </a>
+      </div>
+
+      <!-- GitHub stats embedded below projects -->
+      <div class="gh-card rev" style="margin-top:64px;">
+        <div class="gh-panel" style="display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div class="gh-username">@anlepago</div>
+            <div class="gh-sub">Building AI tools and infrastructure in public.<br />PM-focused repos with real production code.</div>
+            <img
+              src="https://github-readme-stats.vercel.app/api?username=anlepago&show_icons=true&hide_border=true&bg_color=1a1916&text_color=f0ece4&icon_color=d4882a&title_color=d4882a&count_private=true"
+              alt="GitHub Stats"
+              style="width:100%;max-width:400px;margin-top:24px;display:block;"
+            />
+          </div>
+          <a href="https://github.com/anlepago" target="_blank" rel="noopener" class="btn-amber" style="align-self:flex-start;margin-top:24px;">
+            View Profile →
+          </a>
+        </div>
+        <div class="gh-panel" style="display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div class="contrib-lbl">Contribution activity — past year</div>
+            <img
+              src="https://ghchart.rshah.org/d4882a/anlepago"
+              alt="GitHub Contribution Chart"
+              style="width:100%;margin-top:16px;display:block;opacity:.9;"
+            />
+          </div>
+          <div class="repo-pills">
+            <a href="https://github.com/anlepago/pm-os-lite" target="_blank" rel="noopener" class="repo-pill">
+              <span>pm-os-lite</span><span class="repo-lang">TypeScript · AI Product OS</span>
+            </a>
+            <a href="https://github.com/anlepago/video-scoring-pipeline" target="_blank" rel="noopener" class="repo-pill">
+              <span>video-scoring-pipeline</span><span class="repo-lang">Python · Multi-Agent</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  <section id="video">
+    <div class="sec-wrap">
+      <div class="sec-hd rev">
+        <span class="sec-num">04</span>
+        <h2 class="sec-title">Videos</h2>
+        <div class="sec-rule"></div>
+      </div>
+      <h3 class="video-hl rev">Inside Articul8's Domain-Specific Platform<br />and <em>Real-World ROI</em></h3>
+      <div class="video-frame-wrap rev d1">
+        <iframe
+          src="https://player.vimeo.com/video/1133839207"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+          title="Inside Articul8's Domain-Specific Platform and Real-World ROI"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+
+  <section id="contact">
+    <div class="contact-inner">
+      <div class="rev">
+        <h2 class="contact-hl">Let's build<br /><em>something</em><br />remarkable.</h2>
+        <p class="contact-sub">
+          Reach out about AI product strategy, consulting, speaking engagements,
+          or collaborations at the frontier of applied intelligence.
+        </p>
+        <a href="mailto:anlepago@gmail.com" class="contact-email">anlepago@gmail.com</a>
+      </div>
+      <div class="social-list rev d1">
+        <a href="https://github.com/anlepago" target="_blank" rel="noopener" class="soc-row">
+          <div class="soc-left">
+            <div class="soc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></div>
+            <div><div class="soc-name">GitHub</div><div class="soc-handle">@anlepago</div></div>
+          </div>
+          <span class="soc-arr">↗</span>
+        </a>
+        <a href="https://www.linkedin.com/in/parvathi-letha-77a7838/" target="_blank" rel="noopener" class="soc-row">
+          <div class="soc-left">
+            <div class="soc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></div>
+            <div><div class="soc-name">LinkedIn</div><div class="soc-handle">Parvathi Letha</div></div>
+          </div>
+          <span class="soc-arr">↗</span>
+        </a>
+        <a href="https://medium.com/@parvathinair" target="_blank" rel="noopener" class="soc-row">
+          <div class="soc-left">
+            <div class="soc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg></div>
+            <div><div class="soc-name">Medium</div><div class="soc-handle">@parvathinair</div></div>
+          </div>
+          <span class="soc-arr">↗</span>
+        </a>
+        <a href="https://substack.com/@genaiplaybook" target="_blank" rel="noopener" class="soc-row">
+          <div class="soc-left">
+            <div class="soc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg></div>
+            <div><div class="soc-name">Substack</div><div class="soc-handle">@genaiplaybook</div></div>
+          </div>
+          <span class="soc-arr">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Parvathi Letha · Designed &amp; built with care</p>
+    <div class="footer-mark">Parvathi<span>.</span></div>
+  </footer>
+
+  <script>
+    // Cursor
+    const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+    (function tick(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(tick);})();
+    document.querySelectorAll('a,button').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.height='14px';ring.style.opacity='0';});
+      el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';ring.style.opacity='1';});
+    });
+
+    // Scroll reveal
+    const obs=new IntersectionObserver(es=>{
+      es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),i*55);obs.unobserve(e.target);}});
+    },{threshold:.1});
+    document.querySelectorAll('.rev').forEach(el=>obs.observe(el));
+
+    // Skill bars
+    const bo=new IntersectionObserver(es=>{
+      es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.bar-fill').forEach(b=>{setTimeout(()=>{b.style.width=b.dataset.w;},300);});bo.unobserve(e.target);}});
+    },{threshold:.3});
+    const sc=document.querySelector('.skills-card');if(sc)bo.observe(sc);
+  </script>
+</body>
+</html>
